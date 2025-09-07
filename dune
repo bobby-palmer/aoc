@@ -1,2 +1,7 @@
 (executable
- (name p2024_01))
+ (name p2024_01)
+ (modules p2024_01))
+
+(executable
+ (name p2024_02)
+ (modules p2024_02))
