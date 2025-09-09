@@ -1,3 +1,5 @@
+let year = 2025
+
 let cookie = 
   let ic = open_in ".aoc_cookie" in
   let cookie = input_line ic in
@@ -6,7 +8,7 @@ let cookie =
 
 (*Download the string input for a given day*)
 let download_input day =
-  let url = Printf.sprintf "https://adventofcode.com/2024/day/%d/input" day in
+  let url = Printf.sprintf "https://adventofcode.com/%d/day/%d/input" year day in
   let cmd = Printf.sprintf "curl --cookie %s %s" (Filename.quote cookie) (Filename.quote url) in
   let ic = Unix.open_process_in cmd in
   let buf = Buffer.create 1024 in
@@ -33,6 +35,5 @@ let () =
   let day = int_of_string Sys.argv.(1) in
   let input = get_input day in
   let (part1, part2) = input |> match day with
-    | 6 -> Day06.solve
-    | _ -> failwith "Invalid date" in
+    | _ -> failwith "Invalid day" in
   Printf.printf "Part1: %d, Part2: %d" part1 part2
