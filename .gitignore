@@ -35,6 +35,4 @@ setup.log
 # Local OPAM switch
 _opam/
 
-# Input files for AOC
-in.txt 
-test.txt
+.env

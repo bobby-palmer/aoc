@@ -1,19 +1,2 @@
 (executable
- (name day01)
- (modules day01))
-
-(executable
- (name day02)
- (modules day02))
-
-(executable
- (name day03)
- (modules day03))
-
-(executable
- (name day04)
- (modules day04))
-
-(executable
- (name day05)
- (modules day05))
+ (name runner))
