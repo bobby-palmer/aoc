@@ -1,4 +1,4 @@
-let year = 2025
+let year = 2024
 
 (*Store AOC cookies in .aoc_cookie without adding newlines*)
 let cookie = 
@@ -26,7 +26,6 @@ Check if input already downloaded
 If not:
   fetch it and store in file
 Otherwise:
-  => >= <= -> <-
   read it from file
 *)
 let get_input day =
@@ -44,5 +43,6 @@ let () =
   let day = int_of_string Sys.argv.(1) in
   let input = get_input day in
   let (part1, part2) = input |> match day with
+    | 6 -> Day06.solve
     | _ -> failwith "Invalid day" in
   Printf.printf "Part1: %d, Part2: %d" part1 part2
