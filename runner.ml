@@ -45,5 +45,6 @@ let () =
   let (part1, part2) = input |> match day with
     | 6 -> Day06.solve
     | 7 -> Day07.solve
+    | 8 -> Day08.solve
     | _ -> failwith "Invalid day" in
   Printf.printf "Part1: %d, Part2: %d" part1 part2
