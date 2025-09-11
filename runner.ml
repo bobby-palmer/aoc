@@ -26,6 +26,7 @@ Check if input already downloaded
 If not:
   fetch it and store in file
 Otherwise:
+  => >= <= -> <-
   read it from file
 *)
 let get_input day =
