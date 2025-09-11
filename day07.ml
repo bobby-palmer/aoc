@@ -20,10 +20,28 @@ let can_make item =
     | [] -> failwith "Bad input"
     | x :: xs -> aux x xs
 
+let concat_int a b =
+  (string_of_int a) ^ (string_of_int b) |> int_of_string
+
+let can_make2 item =
+  let (target, vals) = item in
+  let rec aux acc lst =
+    match lst with
+      | [] -> 
+          acc = target
+      | elt :: rest -> 
+          aux (acc + elt) rest || aux (acc * elt) rest || aux (concat_int acc elt) rest
+  in match vals with
+    | [] -> failwith "Bad input"
+    | x :: xs -> aux x xs
+
 
 let solve input =
   let input = parse input in
   let p1 = input |> List.filter can_make |> List.fold_left (fun acc (target, _) ->
     acc + target
   ) 0 in
-  (p1, p1)
+  let p2 = input |> List.filter can_make2 |> List.fold_left (fun acc (target, _) ->
+    acc + target
+  ) 0 in
+  (p1, p2)
