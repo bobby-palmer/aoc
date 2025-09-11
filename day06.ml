@@ -47,7 +47,7 @@ let gen_path grid state =
           let next = 
             try
               let (nrow, ncol) = move dir row col in
-              if grid |> arr_get nrow |> arr_get ncol = '#' then Some (rotate dir, row, col)
+              if grid.(nrow).(ncol) = '#' then Some (rotate dir, row, col)
               else Some (dir, nrow, ncol)
             with _ -> None
           in
@@ -69,6 +69,34 @@ let part1 input =
   let guard = find_guard input in
   gen_path input guard |> map_locations |> Seq.length
 
+let is_inf seq =
+  let tbl = Hashtbl.create 0 in
+  seq |> Seq.exists (fun state ->
+    if Hashtbl.find_opt tbl state |> Option.is_some then true
+    else (
+      Hashtbl.replace tbl state ();
+      false
+    )
+  )
+
+let part2 input =
+  let input = parse input in
+  let guard = find_guard input in
+  gen_path input guard |> map_locations |> List.of_seq |>
+  List.fold_left (fun acc (row, col) ->
+    if input.(row).(col) = '.' then (
+      input.(row).(col) <- '#';
+      let inf = gen_path input guard |> is_inf in
+      input.(row).(col) <- '.';
+
+      if inf then acc + 1
+      else acc
+    )
+    else acc
+  ) 0
+
+
 let solve input =
   let p1 = part1 input in
-  (p1, p1)
+  let p2 = part2 input in
+  (p1, p2)
