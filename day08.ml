@@ -32,20 +32,60 @@ let get_places lst rows cols =
     )
   ) |> Seq.filter (is_in_grid rows cols)
 
+module PairOrd = struct
+  type t = int * int
+  let compare = compare
+end
+
+module PairSet = Set.Make(PairOrd)
+
+let count_distint_pairs seq =
+  PairSet.empty |> PairSet.add_seq seq |> PairSet.cardinal
+
+let sub a b =
+  let (r1, c1) = a and (r2, c2) = b in
+  (r1 - r2, c1 - c2)
+
+let line_of_points rows cols a b =
+  let (dr, dc) = sub a b in
+  let aux op state =
+    let (row, col) = state in
+    if is_in_grid rows cols (row, col) then
+      Some ((row, col), (op row dr, op col dc))
+    else None
+  in
+  let forward = Seq.unfold (aux (+)) a and
+  backwards = Seq.unfold (aux (-)) a in
+  Seq.append forward backwards
+
+let gen_pairs lst =
+  let rec aux = function
+    | [] -> Seq.empty
+    | x :: xs ->
+        let seq1 = xs |> List.to_seq |> Seq.map (fun y -> (x, y)) in
+        Seq.append seq1 (aux xs)
+  in
+  aux lst
+
 let part1 input =
   let grid = parse input in
   let rows = Array.length grid
   and cols = Array.length (grid.(0)) in
   let tbl = find_antena grid in
-  let places = Hashtbl.create 0 in
-  Hashtbl.to_seq_values tbl |> 
-    Seq.iter (fun lst ->
-      get_places lst rows cols |> Seq.iter (fun place ->
-        Hashtbl.replace places place ()
-      )
-    );
-  Hashtbl.length places
+  Hashtbl.to_seq_values tbl |> Seq.flat_map (fun lst -> 
+    get_places lst rows cols
+  ) |> count_distint_pairs
+
+let part2 input =
+  let grid = parse input in
+  let rows = Array.length grid
+  and cols = Array.length (grid.(0)) in
+  let tbl = find_antena grid in
+  Hashtbl.to_seq_values tbl |> Seq.flat_map (fun lst ->
+    lst |> gen_pairs |> Seq.flat_map (fun (a, b) -> line_of_points rows cols a b)
+  ) |> count_distint_pairs 
 
 let solve input =
   let p1 = part1 input in
-  (p1, p1)
+  let p2 = part2 input in
+  (p1, p2)
