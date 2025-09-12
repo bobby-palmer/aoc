@@ -1,3 +1,5 @@
+let input = Aoc.Input.get_input 8
+
 let parse input =
   input |> String.trim |> String.split_on_char '\n' |> Array.of_list |>
   Array.map (fun str -> str |> String.to_seq |> Array.of_seq)
@@ -85,7 +87,5 @@ let part2 input =
     lst |> gen_pairs |> Seq.flat_map (fun (a, b) -> line_of_points rows cols a b)
   ) |> count_distint_pairs 
 
-let solve input =
-  let p1 = part1 input in
-  let p2 = part2 input in
-  (p1, p2)
+let () =
+  Printf.printf "%d, %d" (part1 input) (part2 input)

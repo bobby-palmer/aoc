@@ -1,3 +1,5 @@
+let input = Aoc.Input.get_input 6
+
 let parse input =
   input |> String.trim |> String.split_on_char '\n' |> Array.of_list |>
   Array.map (fun str -> String.to_seq str |> Array.of_seq)
@@ -36,8 +38,6 @@ let find_guard input =
         | None -> None
     )
   ) |> Option.get
-
-let arr_get index arr = Array.get arr index
 
 let gen_path grid state =
   let aux state =
@@ -96,7 +96,5 @@ let part2 input =
   ) 0
 
 
-let solve input =
-  let p1 = part1 input in
-  let p2 = part2 input in
-  (p1, p2)
+let () =
+  Printf.printf "%d, %d" (part1 input) (part2 input)

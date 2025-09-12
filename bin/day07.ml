@@ -1,3 +1,5 @@
+let input = Aoc.Input.get_input 7
+
 let parse input =
   input |> String.trim |> String.split_on_char '\n' |>
   List.map (fun line ->
@@ -36,12 +38,15 @@ let can_make2 item =
     | x :: xs -> aux x xs
 
 
-let solve input =
-  let input = parse input in
-  let p1 = input |> List.filter can_make |> List.fold_left (fun acc (target, _) ->
+let part1 =
+  input |> parse |> List.filter can_make |> List.fold_left (fun acc (target, _) ->
     acc + target
-  ) 0 in
-  let p2 = input |> List.filter can_make2 |> List.fold_left (fun acc (target, _) ->
+  ) 0
+
+let part2 =
+  input |> parse |> List.filter can_make2 |> List.fold_left (fun acc (target, _) ->
     acc + target
-  ) 0 in
-  (p1, p2)
+  ) 0
+
+let () =
+  Printf.printf "%d, %d" part1 part2

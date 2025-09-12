@@ -1,3 +1,5 @@
+let input = Aoc.Input.get_input 9
+
 type block =
   | Free of int
   | Taken of int * int

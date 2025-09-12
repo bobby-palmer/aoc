@@ -38,13 +38,3 @@ let get_input day =
     output_string oc input;
     close_out oc;
     input
-
-let () =
-  let day = int_of_string Sys.argv.(1) in
-  let input = get_input day in
-  let (part1, part2) = input |> match day with
-    | 6 -> Day06.solve
-    | 7 -> Day07.solve
-    | 8 -> Day08.solve
-    | _ -> failwith "Invalid day" in
-  Printf.printf "Part1: %d, Part2: %d" part1 part2
