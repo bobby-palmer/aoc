@@ -60,3 +60,22 @@ let part1 input =
   input |> parse |> list_clamp 1024 |> PairSet.of_list |> get_dist (0, 0) (size - 1, size - 1)
 
 let () = print_int (part1 input)
+let () = print_newline ()
+
+let rec test_list set lst =
+  match lst with
+    | x :: xs -> (
+        try 
+          let set = set |> PairSet.add x in
+          let _ = get_dist (0, 0) (size - 1, size - 1) set in
+          test_list set xs
+        with _ -> x
+      )
+    | _ -> failwith "Bad input"
+
+let part2 input =
+  input |> parse |> test_list PairSet.empty
+
+let () =
+  let (x, y) = part2 input in
+  Printf.printf "%d, %d\n" x y
