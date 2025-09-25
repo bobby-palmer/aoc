@@ -1,5 +1,3 @@
-open Aoc
-
 type operation = And | Or | Xor
 
 type node = {
@@ -76,7 +74,8 @@ let part1 input =
     |> run_to_completion
     |> tbl_get_bits "z"
 
-let input = Input.get_input 24
+let input = Aoc.Input.get_input 24
 
-let () = print_int (part1 input)
-let () = print_newline ()
+let () = 
+  print_int (part1 input);
+  print_newline ();

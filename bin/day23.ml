@@ -1,4 +1,3 @@
-
 let parse input =
   input 
     |> String.trim 
