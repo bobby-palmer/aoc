@@ -24,33 +24,45 @@ let part1 input =
     )
     |> List.fold_left (+) 0
 
+let index_of_tup (a, b, c, d) =
+  (a + 9) +
+  (b + 9) * 20 +
+  (c + 9) * 20 * 20 +
+  (d + 9) * 20 * 20 * 20
+
+let window_5_of_seq seq =
+  let aux ((prev, a, b, c), seq) =
+    match seq () with
+      | Seq.Cons (x, xs) ->
+          Some ((prev, a, b, c, x), ((a, b, c, x), xs))
+      | Seq.Nil -> None
+  in
+  match seq |> Seq.take 4 |> List.of_seq with
+    | a::b::c::d::[] -> Seq.unfold (aux) ((a,b,c,d), Seq.drop 4 seq)
+    | _ -> failwith "Not enough elements"
+
 let nanners_of_seq s =
   let tbl = Hashtbl.create 0 in
-  let tbl_remember k v =
-    match Hashtbl.find_opt tbl k with
-      | Some _ -> ()
-      | None -> Hashtbl.replace tbl k v
-  in
-  let rec aux = function
-    | prev::a::b::c::d::xs ->
-        tbl_remember (a - prev, b - a, c - b, d - c) d;
-        aux (a::b::c::d::xs)
-    | _ -> ()
-  in aux (List.of_seq s);
-  tbl
+  s 
+    |> window_5_of_seq
+    |> Seq.filter_map (
+      fun (prev, a, b, c, d) ->
+        let idx = index_of_tup (a - prev, b - a, c - b, d - c) in
+        if Hashtbl.mem tbl idx then None
+        else (
+          Hashtbl.add tbl idx ();
+          Some (idx, d)
+        )
+    )
+
 
 let part2 input =
   let tbl = Hashtbl.create 0 in
-  let merge other_tbl =
-    other_tbl 
-      |> Hashtbl.to_seq
-      |> Seq.iter (
-        fun (k, v) ->
-          let current = match Hashtbl.find_opt tbl k with
-            | Some v -> v
-            | None -> 0
-          in Hashtbl.replace tbl k (current + v)
-      )
+  let add (k, v) =
+    let current = match Hashtbl.find_opt tbl k with
+      | Some v -> v
+      | None -> 0
+    in Hashtbl.replace tbl k (current + v)
   in
   input 
     |> parse 
@@ -60,7 +72,7 @@ let part2 input =
         elt 
           |> Seq.map (fun num -> num mod 10) 
           |> nanners_of_seq 
-          |> merge
+          |> Seq.iter (add)
     );
   tbl
     |> Hashtbl.to_seq_values
