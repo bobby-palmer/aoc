@@ -76,12 +76,6 @@ let part1 input =
     |> run_to_completion
     |> tbl_get_bits "z"
 
-let part2 input =
-  let (tbl, ops) = input |> parse in
-  let x = tbl |> tbl_get_bits "x"
-  and y = tbl |> tbl_get_bits "y" in
-  let goal = x + y in
-
 let input = Input.get_input 24
 
 let () = print_int (part1 input)

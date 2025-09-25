@@ -15,6 +15,7 @@
   day18
   day19
 
+  day23
   day24
  )
  (libraries aoc))
