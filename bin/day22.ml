@@ -55,7 +55,6 @@ let nanners_of_seq s =
         )
     )
 
-
 let part2 input =
   let tbl = Hashtbl.create 0 in
   let add (k, v) =
