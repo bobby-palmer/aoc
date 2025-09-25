@@ -1,6 +1,3 @@
-open Aoc
-
-let input = Input.get_input 23
 
 let parse input =
   input 
@@ -71,8 +68,6 @@ let part1 input =
     )
     |> Seq.length
 
-let () = print_int (part1 input)
-let () = print_newline ()
 
 let lst_max a b =
   if List.length a < List.length b then b
@@ -98,4 +93,9 @@ let part2 input =
     |> List.sort (compare)
     |> String.concat ","
 
-let () = print_endline (part2 input)
+let input = Aoc.Input.get_input 23
+
+let () = 
+  print_int (part1 input);
+  print_newline ();
+  print_endline (part2 input);
