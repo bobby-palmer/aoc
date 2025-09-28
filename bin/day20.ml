@@ -7,12 +7,9 @@ let pos_type_of_char = function
   | '#' -> Wall
   | _ -> failwith "Invalid letter"
 
-module Ord = struct
-  type t = int * int
-  let compare = compare
-end
-
-module PosMap = Map.Make(Ord)
+let pos_type_is_open = function
+  | Start | End | Track -> true
+  | _ -> false
 
 let parse input =
   input 
@@ -29,25 +26,36 @@ let parse input =
         )
   )
   |> Seq.concat
-  |> PosMap.of_seq
+  |> Hashtbl.of_seq
 
-module PriorityQueue = struct
-  
-  let init () = []
+let neighbors (row, col) = 
+  [
+    (1, 0);
+    (-1, 0);
+    (0, 1);
+    (0, -1);
+  ]
+  |> List.map (
+    fun (dr, dc) -> (row + dr, col + dc)
+  )
 
-  let rec push pq (prio, elt) =
-    match pq with
-      | [] -> [(prio, elt)]
-      | (tp, te) :: xs ->
-          if tp <= prio then (prio, elt) :: (tp, te) :: xs
-          else (tp, te) :: push xs (prio, elt)
-
-  let top = function
-    | (prio, elt) :: _ -> (prio, elt)
-    | _ -> failwith "Empty queue"
-
-  let pop = function
-    | _ :: xs -> xs
-    | _ -> failwith "Empty queue"
-
-end
+let bfs graph start_pos =
+  let tbl = Hashtbl.create 0 in
+  let rec aux depth to_visit: unit =
+    if List.is_empty to_visit then ()
+    else 
+      to_visit |> List.iter (fun pos -> Hashtbl.replace tbl pos depth);
+      let next = to_visit
+        |> List.map (neighbors)
+        |> List.flatten
+        |> List.filter (
+          fun pos ->
+            not (Hashtbl.mem tbl pos) && 
+            (match Hashtbl.find_opt graph pos with
+                | Some(Start) | Some(End) | Some(Track) -> true
+                | _ -> false)
+        )
+      in aux (depth + 1) next
+  in
+  aux 0 [start_pos];
+  tbl
