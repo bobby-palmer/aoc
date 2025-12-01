@@ -36,5 +36,5 @@ setup.log
 _opam/
 
 # Custom
-.aoc_cookie
+.env
 .inputs/

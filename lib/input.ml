@@ -1,11 +1,8 @@
-let year = 2024
+let year = 2025
 
 (*Store AOC cookies in .aoc_cookie without adding newlines*)
 let cookie = 
-  let ic = open_in ".aoc_cookie" in
-  let cookie = input_line ic in
-  close_in ic;
-  cookie
+  Sys.getenv "AOC_COOKIE"
 
 (*Download the string input for a given day*)
 let download_input day =

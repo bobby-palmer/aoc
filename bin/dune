@@ -1,23 +1,4 @@
 (executables
- (
-  names 
-  day06
-  day07
-  day08
-  day09
-  day10
-  day11
-  day12
-  day13
-  day14
-
-  day17
-  day18
-  day19
-
-  day22
-  day23
-  day24
-  day25
- )
+ (names 
+  day01)
  (libraries aoc))
