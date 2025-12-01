@@ -2,8 +2,7 @@
 let year = 2025
 
 (* Cookie should be stored as environment variable in order to get inputs!*)
-let cookie = 
-  Sys.getenv "AOC_COOKIE"
+let cookie = "session=" ^ Sys.getenv "AOC_COOKIE"
 
 (** Download the string input for a given day *)
 let download_input day =
