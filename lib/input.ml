@@ -1,13 +1,15 @@
+(*Hard coding this bc idc*)
 let year = 2025
 
-(*Store AOC cookies in .aoc_cookie without adding newlines*)
+(* Cookie should be stored as environment variable in order to get inputs!*)
 let cookie = 
   Sys.getenv "AOC_COOKIE"
 
-(*Download the string input for a given day*)
+(** Download the string input for a given day *)
 let download_input day =
   let url = Printf.sprintf "https://adventofcode.com/%d/day/%d/input" year day in
-  let cmd = Printf.sprintf "curl --cookie %s %s" (Filename.quote cookie) (Filename.quote url) in
+  let cmd = Printf.sprintf 
+    "curl --cookie %s %s" (Filename.quote cookie) (Filename.quote url) in
   let ic = Unix.open_process_in cmd in
   let buf = Buffer.create 1024 in
   (try
@@ -18,13 +20,8 @@ let download_input day =
   ignore (Unix.close_process_in ic);
   Buffer.contents buf
 
-(*
-Check if input already downloaded
-If not:
-  fetch it and store in file
-Otherwise:
-  read it from file
-*)
+(** Check if input already downloaded
+    If not, fetch it and store in file. Otherwise, read it from file *)
 let get_input day =
   let filename = Printf.sprintf ".inputs/%d.txt" day in
   if Sys.file_exists filename then
