@@ -4,5 +4,9 @@
   day02
   day03
   day04
+  day06
+  day09
+  day10
+  day11
   )
  (libraries aoc))

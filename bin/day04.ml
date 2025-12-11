@@ -26,16 +26,16 @@ let range lower upper =
   ) lower
 
 (** Count the number of paper squares in 3 by 3 square centered at r, c*)
-let count_in_3by3 grid (r, c) =
-  (range (-1) 1) 
-  |> Seq.map (fun dr ->
-        (range (-1) 1)
-        |> Seq.filter (fun dc ->
-                Hashtbl.find_opt grid (r + dr, c + dc) = Some Paper
-            )
-        |> Seq.length
-      )
-  |> Seq.fold_left (+) 0
+(* let count_in_3by3 grid (r, c) = *)
+(*   (range (-1) 1)  *)
+(*   |> Seq.map (fun dr -> *)
+(*         (range (-1) 1) *)
+(*         |> Seq.filter (fun dc -> *)
+(*                 Hashtbl.find_opt grid (r + dr, c + dc) = Some Paper *)
+(*             ) *)
+(*         |> Seq.length *)
+(*       ) *)
+(*   |> Seq.fold_left (+) 0 *)
 
 let can_reach grid (r, c) =
   (range (-1) 1) 
