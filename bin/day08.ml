@@ -32,10 +32,12 @@ let rec get_parent tbl elt =
       parent
   | _ -> elt
 
+(** Union groups a and b and return true if they were disjoint *)
 let union tbl (a, b) =
   let a = get_parent tbl a
   and b = get_parent tbl b in
-  Hashtbl.replace tbl a b
+  Hashtbl.replace tbl a b;
+  a != b
 
 (** Return list of min(length, n) first elements *)
 let rec list_take n = function
@@ -49,7 +51,7 @@ let part1 input =
     |> make_pairs 
     |> List.sort cmp_distance 
     |> list_take 1000
-    |> List.iter (union tbl);
+    |> List.iter (fun x -> ignore (union tbl x));
   let counts = Hashtbl.create 0 in
   boxes
   |> List.map (get_parent tbl)
@@ -66,8 +68,23 @@ let part1 input =
   |> list_take 3
   |> List.fold_left ( * ) 1
 
+let part2 input =
+  let boxes = parse input and
+  tbl = Hashtbl.create 0 in
+  let effective_joins = boxes
+    |> make_pairs
+    |> List.sort cmp_distance
+    |> List.filter (union tbl)
+  in
+  let ((a, _, _), (b, _, _)) =
+    effective_joins
+    |> List.rev
+    |> List.hd in
+  a * b
+
 let () =
   let input = Aoc.Input.get_input 8 in
   input |> part1 |> print_int;
   print_newline ();
+  input |> part2 |> print_int;
 ;
