@@ -30,7 +30,30 @@ let part1 input =
   |> List.filter (fun q -> List.exists (contains q) ranges)
   |> List.length
 
+(** Insert interval into list in sorted order, merging adjacent intervals *)
+let rec coalesse lst (l, r) =
+  match lst with
+  | (u, v) :: xs ->
+      if r + 1 < u then 
+        (l, r) :: ((u, v) :: xs)
+      else if v + 1 < l then 
+        (u, v) :: coalesse xs (l, r)
+      else 
+        coalesse xs (min l u, max r v)
+  | [] -> [(l, r)]
+
+let part2 input =
+  let (ranges, _) = parse input in
+  ranges
+  |> List.fold_left (coalesse) []
+  |> List.map (fun (l, r) -> r - l + 1)
+  |> List.fold_left ( + ) 0
+
+
 let () =
   let input = Aoc.Input.get_input 5 in
   input |> part1 |> print_int;
-  print_newline ();;
+  print_newline ();
+  input |> part2 |> print_int;
+  print_newline();
+;
