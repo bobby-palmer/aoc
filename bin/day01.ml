@@ -58,10 +58,10 @@ let part2 input =
     |> snd
     |> List.fold_left (+) 0
 
-let input = Aoc.Input.get_input 1
-
-let () = input |> part1 |> print_int
-let () = print_newline ()
-
-let () = input |> part2 |> print_int
-let () = print_newline ()
+let () = 
+  let input = Aoc.Input.get_input 1 in
+  part1 input |> print_int;
+  print_newline ();
+  part2 input |> print_int;
+  print_newline ();
+;
