@@ -56,10 +56,9 @@ let part2 = solve (fun id ->
     |> not
   )
 
-let input = Aoc.Input.get_input 2
-
-let () = input |> part1 |> print_int
-let () = print_newline ()
-
-let () = input |> part2 |> print_int
-let () = print_newline ()
+let () = 
+  let input = Aoc.Input.get_input 2 in
+  part1 input |> print_int;
+  print_newline ();
+  part2 input |> print_int;
+  print_newline ()
