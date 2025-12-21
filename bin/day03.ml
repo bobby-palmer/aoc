@@ -45,4 +45,4 @@ let () =
   input |> part1 |> print_int;
   print_newline ();
   input  |> part2 |> print_int;
-  print_newline ();;
+  print_newline ()
