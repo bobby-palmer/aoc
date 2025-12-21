@@ -34,7 +34,3 @@ setup.log
 
 # Local OPAM switch
 _opam/
-
-# Custom
-.env
-.inputs/
