@@ -1,4 +1,0 @@
-(executables 
-  (names 
-    d2025_01) 
-  (libraries aoc))

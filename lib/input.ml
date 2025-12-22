@@ -1,26 +1,29 @@
-let get_input year day =
-  let session =
-    match Sys.getenv_opt "AOC_SESSION" with
-    | Some s -> s
-    | None -> failwith "AOC_SESSION environment variable not set"
-  in
-  let uri =
-    Uri.of_string
-      (Printf.sprintf "https://adventofcode.com/%d/day/%d/input" year day)
-  in
-  let headers =
-    Cohttp.Header.of_list [ ("Cookie", "session=" ^ session) ]
-  in
-  let body =
-    Lwt_main.run
-      (let open Lwt.Syntax in
-       let* resp, body = Cohttp_lwt_unix.Client.get ~headers uri in
-       let status = Cohttp.Response.status resp in
-       if Cohttp.Code.is_success (Cohttp.Code.code_of_status status) then
-         Cohttp_lwt.Body.to_string body
-       else
-         failwith
-           (Printf.sprintf "Failed to fetch input: %s"
-              (Cohttp.Code.string_of_status status)))
-  in
-  String.trim body
+let session_cookie =
+  match Sys.getenv_opt "AOC_COOKIE" with
+    | Some cookie -> cookie
+    | None -> failwith "Please set AOC_COOKIE to download inputs!"
+
+let download year day =
+  let url = Printf.sprintf "https://adventofcode.com/%d/day/%d/input" year day in
+  let command = Printf.sprintf "curl -b \"session=%s\" %s" session_cookie url in
+  let ic = Unix.open_process_in command in 
+  let output = In_channel.input_all ic in
+  let exit_status = Unix.close_process_in ic in
+  if exit_status = (Unix.WEXITED 0) then 
+    output
+  else (
+    print_string output;
+    failwith "Failed to download input"
+  )
+  
+
+let get year day =
+  let filename = Printf.sprintf "_input/%d_%d.txt" year day in
+  if Sys.file_exists filename then
+    In_channel.with_open_text filename In_channel.input_all
+  else
+    let input = download year day in 
+    Out_channel.with_open_text filename (fun oc ->
+        Out_channel.output_string oc input
+      );
+    input
