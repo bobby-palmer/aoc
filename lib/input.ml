@@ -16,7 +16,6 @@ let download year day =
     failwith "Failed to download input"
   )
   
-
 let get year day =
   let filename = Printf.sprintf "_input/%d_%d.txt" year day in
   if Sys.file_exists filename then
