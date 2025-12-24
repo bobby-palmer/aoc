@@ -37,9 +37,13 @@ let rec get_source_value cache source_tbl register =
   else
     let v = 
       match Hashtbl.find source_tbl register with
-      | NonaryOp source -> get_source_value cache source_tbl source
-      | UnaryOp (f, source) -> f (get_source_value cache source_tbl source)
-      | BinaryOp (f, s1, s2) -> f (get_source_value cache source_tbl s1) (get_source_value cache source_tbl s2) in
+      | NonaryOp source -> 
+          get_source_value cache source_tbl source
+      | UnaryOp (f, source) -> 
+          f (get_source_value cache source_tbl source)
+      | BinaryOp (f, s1, s2) -> 
+          f (get_source_value cache source_tbl s1) 
+            (get_source_value cache source_tbl s2) in
     Hashtbl.replace cache register v;
     v
 
@@ -49,8 +53,10 @@ let part1 source_tbl =
 
 let part2 source_tbl =
   let register_a = part1 source_tbl in
+  Hashtbl.replace source_tbl "b" (
+    NonaryOp (string_of_int register_a)
+  );
   let cache = Hashtbl.create 0 in
-  Hashtbl.add cache "b" register_a;
   get_source_value cache source_tbl "a"
 
 let () =
