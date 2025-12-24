@@ -1,13 +1,12 @@
 open Aoc
 
+let n = 1000
+
 type instruction = On | Off | Toggle
 
 let instruction_regex = {|\(turn on\|turn off\|toggle\)|}
-
 let number_regex = {|\([0-9]+\)|}
-
 let pair_regex = number_regex ^ "," ^ number_regex
-
 let r = Str.regexp (
     "^" ^ instruction_regex ^ " " ^ pair_regex ^ " through " ^ pair_regex
   )
@@ -32,46 +31,62 @@ let parse_instructions input =
   |> String.split_on_char '\n'
   |> List.map parse_instruction
 
-let contains (x1, y1) (x2, y2) (x, y) =
-  (min x1 x2 <= x && x <= max x1 x2) &&
-  (min y1 y2 <= y && y <= max y1 y2)
-
-(* Make a sequence over [0, limit) *)
-let iota limit =
+(* Make seq of numbers in [a, b] *)
+let make_range_inclusive a b =
+  let lower = min a b
+  and upper = max a b in
   Seq.unfold (fun current ->
-    if current < limit then Some (current, current + 1)
+    if current <= upper then Some (current, current + 1)
     else None
-  ) 0
+  ) lower
 
-(* Make a sequence over all (x, y) for lights *)
-let make_grid () =
-  let size = 1000 in
-  iota size
+let points_in_rectangle (x1, y1) (x2, y2) =
+  make_range_inclusive x1 x2
   |> Seq.flat_map (fun x ->
-    iota size |> Seq.map (fun y -> (x, y))
+    make_range_inclusive y1 y2
+    |> Seq.map (fun y -> (x, y))
   )
-
-let simulate lst =
-  let rec aux = function
-  | On :: _ -> true
-  | Off :: _ -> false
-  | Toggle :: xs -> not (aux xs)
-  | [] -> false in
-  aux (List.rev lst)
 
 let part1 instructions =
-  make_grid ()
-  |> Seq.map (fun square ->
-    instructions
-    |> List.filter_map (fun (i, p1, p2) ->
-      if contains p1 p2 square then Some i
-      else None
+  let grid = Array.make_matrix n n false in
+  instructions 
+  |> List.iter (fun (i, p1, p2) ->
+    points_in_rectangle  p1 p2
+    |> Seq.iter (fun (x, y) ->
+      grid.(x).(y) <-
+        match i with
+          | On -> true
+          | Off -> false
+          | Toggle -> not (grid.(x).(y))
     )
-    |> simulate
-  )
-  |> Seq.filter (fun b -> b)
-  |> Seq.length
+  );
+  Array.fold_left (
+    Array.fold_left (fun acc b -> 
+      if b then acc + 1
+      else acc
+    )
+  ) 0 grid
+
+let part2 instructions =
+  let grid = Array.make_matrix n n 0 in
+  instructions 
+  |> List.iter (fun (i, p1, p2) ->
+    points_in_rectangle p1 p2
+    |> Seq.iter (fun (x, y) ->
+      let old = grid.(x).(y) in
+      grid.(x).(y) <-
+        match i with
+          | On -> old + 1
+          | Off -> max (old - 1) 0
+          | Toggle -> old + 2
+    )
+  );
+  grid 
+  |> Array.fold_left (Array.fold_left (+)) 0
 
 let () =
   let instructions = parse_instructions @@ Input.get 2015 6 in
-  part1 instructions |> print_int
+  part1 instructions |> print_int;
+  print_newline ();
+  part2 instructions |> print_int;
+  print_newline ()
