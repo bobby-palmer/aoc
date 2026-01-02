@@ -17,7 +17,12 @@ let download year day =
   )
   
 let get year day =
-  let filename = Printf.sprintf "_input/%d_%d.txt" year day in
+  let inputs_dir = "_input" in
+  if not (Sys.file_exists inputs_dir) then
+    Unix.mkdir inputs_dir 755;
+  let filename = 
+    Printf.sprintf "%s/%d_%d.txt" inputs_dir year day 
+  in
   if Sys.file_exists filename then
     In_channel.with_open_text filename In_channel.input_all
   else
