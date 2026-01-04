@@ -10,18 +10,26 @@ let download year day =
   let output = In_channel.input_all ic in
   let exit_status = Unix.close_process_in ic in
   if exit_status = (Unix.WEXITED 0) then 
-    output
+    (* remove extra whitespace *)
+    String.trim output
   else (
     print_string output;
     failwith "Failed to download input"
   )
+
+let cache_dir =
+  let base = Filename.get_temp_dir_name () in
+  Filename.concat base "aoc"
+
+let ensure_cache_dir () =
+  if not (Sys.file_exists cache_dir) then
+    Sys.mkdir cache_dir 0o755
   
 let get year day =
-  let inputs_dir = "_input" in
-  if not (Sys.file_exists inputs_dir) then
-    Unix.mkdir inputs_dir 755;
-  let filename = 
-    Printf.sprintf "%s/%d_%d.txt" inputs_dir year day 
+  ensure_cache_dir ();
+  let filename =
+    Printf.sprintf "%d_%d.txt" year day
+    |> Filename.concat cache_dir
   in
   if Sys.file_exists filename then
     In_channel.with_open_text filename In_channel.input_all
