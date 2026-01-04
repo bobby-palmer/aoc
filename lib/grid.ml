@@ -12,6 +12,8 @@ let of_string s =
 
 let map f g = Array.map (fun row -> Array.map f row) g
 
+let mapi f g = g |> Array.mapi (fun r row -> row |> Array.mapi (f r))
+
 let get g (row, col) = g.(row).(col)
 
 let dimensions g =
