@@ -54,9 +54,11 @@ let () = Printf.printf "Part1: %d\n" (run_with 12 2)
 
 let () =
   let (arg1, arg2) =
-    Seq.range 0 100
+    Seq.ints 0
+    |> Seq.take 100
     |> Seq.flat_map (fun arg1 ->
-        Seq.range 0 100 
+        Seq.ints 0
+        |> Seq.take 100
         |> Seq.map (fun arg2 -> (arg1, arg2))
     )
     |> Seq.find (fun (arg1, arg2) ->
