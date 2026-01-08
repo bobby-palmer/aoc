@@ -1,5 +1,7 @@
 type t = { x: int; y: int; }
 
+let compare = compare
+
 let create x y = { x; y }
 let of_tuple (x, y) = { x; y }
 let to_tuple v = (v.x, v.y)
