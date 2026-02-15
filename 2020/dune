@@ -1,4 +1,5 @@
 (executables
   (names day01
-         day02)
+         day02
+         day03)
   (libraries aoc))
