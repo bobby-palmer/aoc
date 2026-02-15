@@ -1,6 +1,6 @@
 open Aoc
 
-let input = Input.get 2020 1
+let input = Input.get ~year:2020 ~day:1
   |> String.trim
   |> String.split_on_char '\n'
   |> List.map int_of_string

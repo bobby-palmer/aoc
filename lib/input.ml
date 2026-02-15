@@ -25,7 +25,7 @@ let ensure_cache_dir () =
   if not (Sys.file_exists cache_dir) then
     Sys.mkdir cache_dir 0o755
   
-let get year day =
+let get ~year ~day =
   ensure_cache_dir ();
   let filename =
     Printf.sprintf "%d_%d.txt" year day

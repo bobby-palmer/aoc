@@ -20,7 +20,7 @@ let is_verified p =
   p.min_count <= count && count <= p.max_count
 
 let input = 
-  Input.get 2020 2
+  Input.get ~year:2020 ~day:2
   |> String.trim
   |> String.split_on_char '\n'
   |> List.map password_of_string
