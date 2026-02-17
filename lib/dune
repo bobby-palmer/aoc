@@ -1,3 +1,3 @@
 (library
   (name aoc)
-  (libraries unix))
+  (libraries unix str))
