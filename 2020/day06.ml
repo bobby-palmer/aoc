@@ -13,12 +13,11 @@ let count_yesses answers =
   |> CharSet.of_seq
   |> CharSet.cardinal
 
-let part1 input =
+let () = 
   input
   |> List.map count_yesses
   |> List.fold_left (+) 0
-
-let () = part1 input |> Printf.printf "Part1: %d\n"
+  |> Printf.printf "Part1: %d\n"
 
 let count_unanimous group =
   let selections =
