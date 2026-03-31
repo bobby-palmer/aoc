@@ -59,7 +59,6 @@ let rec count_zero pos = function
       zeros_for_move + count_zero next_pos xs
   | [] -> 0
 
-
 let () =
   let zeroes = count_zero 50 directions in
   Printf.printf "Part2: %d\n" zeroes
