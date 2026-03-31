@@ -5,7 +5,11 @@ let session_cookie =
 
 let download year day =
   let url = Printf.sprintf "https://adventofcode.com/%d/day/%d/input" year day in
-  let command = Printf.sprintf "curl -b \"session=%s\" %s" session_cookie url in
+  let command = 
+    Printf.sprintf 
+      "curl --fail-with-body -b \"session=%s\" %s"
+      session_cookie url 
+  in
   let ic = Unix.open_process_in command in 
   let output = In_channel.input_all ic in
   let exit_status = Unix.close_process_in ic in
@@ -39,3 +43,8 @@ let get ~year ~day =
         Out_channel.output_string oc input
       );
     input
+
+let clear_cache () =
+  Sys.readdir cache_dir |>
+  Array.iter (fun file -> Sys.remove (Filename.concat cache_dir file));
+  Sys.rmdir cache_dir

@@ -1,0 +1,3 @@
+(executables
+  (names day11)
+  (libraries aoc))

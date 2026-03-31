@@ -19,3 +19,8 @@ let cols g =
 
 let get g row col =
   g.(row).(col)
+
+let map f g =
+  Array.map (fun row ->
+    Array.map f row
+  ) g
