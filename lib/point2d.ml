@@ -1,5 +1,7 @@
 type t = (int * int)
 
+let compare = compare
+
 type direction =
   | North
   | NorthWest
