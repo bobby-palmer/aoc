@@ -14,8 +14,7 @@ let download year day =
   let output = In_channel.input_all ic in
   let exit_status = Unix.close_process_in ic in
   if exit_status = (Unix.WEXITED 0) then 
-    (* remove extra whitespace *)
-    String.trim output
+    output
   else (
     print_string output;
     failwith "Failed to download input"
