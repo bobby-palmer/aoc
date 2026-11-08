@@ -11,4 +11,6 @@
   base
   stdio
   ppx_expect
-  ppx_sexp_conv))
+  ppx_sexp_conv
+  (ocaml-lsp-server :with-dev-setup)
+  (ocamlformat :with-dev-setup)))
