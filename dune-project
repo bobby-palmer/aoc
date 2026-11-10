@@ -1,4 +1,4 @@
-(lang dune 3.0)
+(lang dune 3.7)
 
 (generate_opam_files true)
 
@@ -10,7 +10,6 @@
   dune
   base
   stdio
-  ppx_expect
-  ppx_sexp_conv
+  ppx_jane
   (ocaml-lsp-server :with-dev-setup)
   (ocamlformat :with-dev-setup)))
