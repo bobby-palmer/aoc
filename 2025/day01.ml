@@ -38,7 +38,6 @@ let part1 locations =
   List.filter locations ~f:(fun elt -> elt % 100 = 0) 
   |> List.length
 
-
 let count_zeros start end_ =
   let section i =
     match i < 0 with
