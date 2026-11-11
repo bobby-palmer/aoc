@@ -1,6 +1,0 @@
-(executable
- (name main)
- (public_name aoc)
- (libraries base aoc)
- (preprocess
-  (pps ppx_jane)))
