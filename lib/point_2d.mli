@@ -1,15 +1,17 @@
-open! Base
+open! Core
 
-type t [@@deriving compare]
+type t [@@deriving sexp, compare]
+
+include Comparable.S with type t := t
 
 val create : row:int -> col:int -> t
 val north : t -> t
 val west : t -> t
 val south : t -> t
 val east : t -> t
-val cardinals : (t -> t) list
+val neighbors : t -> t list
 val northwest : t -> t
 val northeast : t -> t
 val southwest : t -> t
 val southeast : t -> t
-val extended_cardinals : (t -> t) list
+val extended_neighbors : t -> t list

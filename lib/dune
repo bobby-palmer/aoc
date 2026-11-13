@@ -1,7 +1,7 @@
 (library
  (name aoc)
  (public_name aoc)
- (libraries base unix)
+ (libraries core unix)
  (inline_tests)
  (preprocess
   (pps ppx_jane)))

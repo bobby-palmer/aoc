@@ -8,8 +8,7 @@
  (depends
   (ocaml (>= 5.0))
   dune
-  base
-  stdio
+  core
   ppx_jane
   (ocaml-lsp-server :with-dev-setup)
   (ocamlformat :with-dev-setup)))

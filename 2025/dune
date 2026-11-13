@@ -1,5 +1,5 @@
 (executables
  (names day01 day02 day03 day04)
- (libraries base aoc)
+ (libraries core aoc)
  (preprocess
   (pps ppx_jane)))
