@@ -5,6 +5,8 @@ type t [@@deriving sexp, compare]
 include Comparable.S with type t := t
 
 val create : row:int -> col:int -> t
+val row : t -> int
+val col : t -> int
 val north : t -> t
 val west : t -> t
 val south : t -> t

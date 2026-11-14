@@ -3,6 +3,7 @@ open! Core
 
 let input = Input.get ~year:2025 ~day:6 |> Or_error.ok_exn
 
+(* Assumes a rectangle input *)
 let rec transpose matrix =
   let row, rest =
     List.fold_map matrix ~init:[] ~f:(fun acc row ->
@@ -28,8 +29,12 @@ let part1 input =
   List.map eqns ~f:(fun eqn ->
     match eqn with
     | operator :: nums -> apply operator nums
-    | _ -> raise_s [%message "bad input"])
+    | _ -> raise_s [%message "expected an operator and some nums for each row"])
   |> Util.sum_list
+;;
+
+let _part2 _input =
+  raise_s [%message "this one super annoying and I dont wanna implement rn"]
 ;;
 
 let () = printf "Part1: %d\n" (part1 input)

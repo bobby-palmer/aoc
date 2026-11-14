@@ -12,6 +12,8 @@ include T
 include Comparable.Make (T)
 
 let create ~row ~col = { row; col }
+let row t = t.row
+let col t = t.col
 let north t = { t with row = t.row - 1 }
 let west t = { t with col = t.col - 1 }
 let south t = { t with row = t.row + 1 }
