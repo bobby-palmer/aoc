@@ -31,8 +31,10 @@ let ranges_overlap (x, y) (u, v) =
 ;;
 
 let insert_range ranges range =
-  let to_join, disjoint = List.partition_tf ranges ~f:(ranges_overlap range) in
-  let range = List.fold to_join ~init:range ~f:(fun (x, y) (u, v) -> min x u, max y v) in
+  let overlapping, disjoint = List.partition_tf ranges ~f:(ranges_overlap range) in
+  let range =
+    List.fold overlapping ~init:range ~f:(fun (x, y) (u, v) -> min x u, max y v)
+  in
   range :: disjoint
 ;;
 
