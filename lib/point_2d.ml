@@ -5,11 +5,12 @@ module T = struct
     { row : int
     ; col : int
     }
-  [@@deriving sexp, compare]
+  [@@deriving sexp, compare, hash]
 end
 
 include T
 include Comparable.Make (T)
+include Hashable.Make (T)
 
 let create ~row ~col = { row; col }
 let row t = t.row

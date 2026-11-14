@@ -3,39 +3,45 @@ open! Core
 
 type t =
   { start : Point_2d.t
-  ; splitters : Point_2d.Set.t
+  ; splitters : Point_2d.t list
+  ; num_rows : int
   }
 
 let parse input =
   let grid = Grid.of_string input in
-  let start = Map.filter grid ~f:(Char.( = ) 'S') |> Map.keys |> List.hd_exn in
-  let splitters = Map.filter grid ~f:(Char.( = ) '^') |> Map.key_set in
-  { start; splitters }
+  let start = Grid.where_letter_is grid ~letter:'S' |> List.hd_exn in
+  let splitters = Grid.where_letter_is grid ~letter:'^' in
+  let num_rows = Grid.num_rows grid in
+  { start; splitters; num_rows }
 ;;
 
-let part1 { start; splitters } =
-  let beams = Set.add Point_2d.Set.empty start in
-  let last_split_row =
-    Set.fold splitters ~init:0 ~f:(fun acc splitter -> max acc (Point_2d.row splitter))
+let run { start; splitters; num_rows } ~map_returned_to_cached =
+  let cache = Point_2d.Table.create () in
+  let rec aux =
+    Hashtbl.find_and_call cache ~if_found:Fn.id ~if_not_found:(fun point ->
+      match Point_2d.row point >= num_rows with
+      | true -> 1
+      | false ->
+        let result =
+          match Point_2d.south point with
+          | next_point when List.mem splitters next_point ~equal:Point_2d.equal ->
+            aux (Point_2d.west next_point) + aux (Point_2d.east next_point)
+          | next_point -> aux next_point
+        in
+        Hashtbl.set cache ~key:point ~data:(map_returned_to_cached result);
+        result)
   in
-  let rec run beams =
-    let split, unaffected =
-      Point_2d.Set.map beams ~f:Point_2d.south |> Set.partition_tf ~f:(Set.mem splitters)
-    in
-    let post_split =
-      let left = Point_2d.Set.map split ~f:Point_2d.west in
-      let right = Point_2d.Set.map split ~f:Point_2d.east in
-      Set.union left right
-    in
-    let beams = Set.union unaffected post_split in
-    let this_splits = Set.length split in
-    let is_done = Set.for_all beams ~f:(fun beam -> Point_2d.row beam > last_split_row) in
-    match is_done with
-    | true -> this_splits
-    | false -> this_splits + run beams
-  in
-  run beams
+  aux start
 ;;
 
+(* Kind of weird but wanted to share logic with part 2. We only cache 1 because
+   we dont want to double count splits. And we subtract one to account for the
+   starting beam which is not a split. *)
+let part1 t = run t ~map_returned_to_cached:(fun _ -> 1) - 1
+let part2 t = run t ~map_returned_to_cached:Fn.id
 let input = Input.get ~year:2025 ~day:7 |> Or_error.ok_exn |> parse
-let () = printf "Part1: %d\n" (part1 input)
+
+let () =
+  printf "Part1: %d\n" (part1 input);
+  printf "Part2: %d\n" (part2 input)
+;;

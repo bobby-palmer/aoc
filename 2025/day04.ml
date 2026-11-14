@@ -2,7 +2,7 @@ open! Aoc
 open! Core
 
 let parse_rolls input =
-  Grid.of_string input |> Map.filter ~f:(Char.( = ) '@') |> Map.key_set
+  Grid.of_string input |> Grid.where_letter_is ~letter:'@' |> Point_2d.Set.of_list
 ;;
 
 let adjacent_rolls roll ~rolls =

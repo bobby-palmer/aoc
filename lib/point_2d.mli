@@ -1,8 +1,9 @@
 open! Core
 
-type t [@@deriving sexp, compare]
+type t [@@deriving sexp, compare, hash]
 
 include Comparable.S with type t := t
+include Hashable.S with type t := t
 
 val create : row:int -> col:int -> t
 val row : t -> int

@@ -1,4 +1,4 @@
-open! Base
+open! Core
 
 (** Sequence: init, init + 1, init + 2, ... *)
 let inf_sequence init = Sequence.unfold ~init ~f:(fun i -> Some (i, i + 1))
