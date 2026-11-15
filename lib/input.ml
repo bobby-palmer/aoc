@@ -36,3 +36,5 @@ let get ~year ~day =
     Stdio.Out_channel.write_all filename ~data:input;
     input
 ;;
+
+let get_exn ~year ~day = get ~year ~day |> Or_error.ok_exn
