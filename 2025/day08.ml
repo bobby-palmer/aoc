@@ -47,8 +47,6 @@ let part1 =
   List.fold top3 ~init:1 ~f:Int.( * )
 ;;
 
-let () = printf "Part1: %d\n" part1
-
 let part2 =
   let boxes = List.mapi boxes ~f:(fun i box -> Union_find.create i, box) in
   let pair_dist ((_, box1), (_, box2)) = Box.dist2 box1 box2 in
@@ -68,4 +66,7 @@ let part2 =
   x1 * x2
 ;;
 
-let () = printf "Part2: %d\n" part2
+let () =
+  printf "Part1: %d\n" part1;
+  printf "Part2: %d\n" part2
+;;
