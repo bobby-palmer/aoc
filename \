@@ -1,0 +1,48 @@
+open! Aoc
+open! Core
+
+let parse input =
+  let parse_passport s =
+    String.split s ~on:' ' |> List.map ~f:(fun pair -> String.lsplit2_exn pair ~on:':')
+  in
+  String.split_lines input
+  |> List.group ~break:(fun s _ -> String.is_empty s)
+  |> List.map ~f:(String.concat ~sep:" ")
+  |> List.map ~f:String.strip
+  |> List.map ~f:parse_passport
+;;
+
+let passports = Input.get_exn ~year:2020 ~day:4 |> parse
+
+type fields =
+  | Birth_year
+  | Issue_year
+  | Expiration_year
+  | Height
+  | Hair_color
+  | Eye_color
+  | Passport_id
+[@@deriving enumerate, equal]
+
+let field_to_string = function
+  | Birth_year -> "byr"
+  | Issue_year -> "iyr"
+  | Expiration_year -> "eyr"
+  | Height -> "hgt"
+  | Hair_color -> "hcl"
+  | Eye_color -> "ecl"
+  | Passport_id -> "pid"
+;;
+
+let is_valid_passport p =
+  let required = List.map all_of_fields ~f:field_to_string in
+  List.for_all required ~f:(List.Assoc.mem p ~equal:String.equal)
+;;
+
+let part1 = passports |> List.count ~f:is_valid_passport
+
+let validate_field field value =
+  match field with
+  | _ -> failwith
+
+let () = printf "Part1: %d\n" part1
