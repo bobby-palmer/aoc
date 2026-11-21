@@ -18,3 +18,5 @@ val northeast : t -> t
 val southwest : t -> t
 val southeast : t -> t
 val extended_neighbors : t -> t list
+val map_row : t -> f:(int -> int) -> t
+val map_col : t -> f:(int -> int) -> t

@@ -22,12 +22,6 @@ let is_valid ({ lowest; highest; letter }, password) =
 
 let part1 = List.count policies_and_passwords ~f:is_valid
 
-let ( #/ ) s index =
-  match index < String.length s with
-  | true -> Some s.[index]
-  | false -> None
-;;
-
 let is_valid ({ lowest; highest; letter }, password) =
   let matches index = Char.equal password.[index - 1] letter in
   match matches lowest, matches highest with

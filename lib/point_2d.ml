@@ -28,3 +28,6 @@ let southeast = Fn.compose south east
 let extended_neighbors t =
   [ northwest t; northeast t; southwest t; southeast t ] @ neighbors t
 ;;
+
+let map_row t ~f = { t with row = f t.row }
+let map_col t ~f = { t with col = f t.col }
